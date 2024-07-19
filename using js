@@ -1,0 +1,24 @@
+const cityInput = document.getElementById('city');
+const getWeatherButton = document.getElementById('get-weather');
+const weatherDataDiv = document.getElementById('weather-data');
+
+getWeatherButton.addEventListener('click', () => {
+	const city = cityInput.value;
+	fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial`)
+		.then(response => response.json())
+		.then(data => {
+			const weatherData = `
+				<p>Temperature: ${data.main.temp}°F</p>
+				<p>Humidity: ${data.main.humidity}%</p>
+				<p>Weather: ${data.weather[0].description}</p>
+			`;
+			weatherDataDiv.innerHTML = weatherData;
+		})
+		.catch(error => console.error(error));
+});
+
+cityInput.addEventListener('keypress', (event) => {
+	if (event.key === 'Enter') {
+		getWeatherButton.click();
+	}
+});
